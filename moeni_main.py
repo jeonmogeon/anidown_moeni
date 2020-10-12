@@ -83,17 +83,19 @@ def down(name, URL, folder):
     f.write(requests.get("https://s0.momoafile.info/"+uri+".moe", headers=hd).content)
     sys.stdout.write('\r' + f'Download {folder} : Download Complete ')
     f.close()
-
-    print(f'Download {folder} : Subtitle downloading..')
-    sb = {'Referer':URL.encode('utf-8')}
-    body = requests.get("https://player.moeni.org/sub.php?v="+uri, headers=sb).content
-    if len(body)==0: 
-        print(f'Download {folder} : Subtitle Empty..')
-    else: 
-        sub = open(path+"/"+folder+"/"+name.replace(" ","_")+".vtt",'wb')
-        sub.write(body)
-        sub.close()
-        print(f'Download {folder} : Everything Done!')
+    try:
+        sys.stdout.write('\r' + f'Download {folder} : Subtitle downloading..')
+        sb = {'Referer':URL.encode('utf-8')}
+        body = requests.get("https://player.moeni.org/sub.php?v="+uri, headers=sb).content
+        if len(body)==0: 
+            sys.stdout.write('\r' + f'Download {folder} : Subtitle Empty..')
+        else: 
+            sub = open(path+"/"+folder+"/"+name.replace(" ","_")+".vtt",'wb')
+            sub.write(body)
+            sub.close()
+            sys.stdout.write('\r' + f'Download {folder} : Everything Done!\n')
+    except Exception:
+            sys.stdout.write('\r' + f'Download {folder} : Downloaded without subtitle!\n')
  
 if __name__ == '__main__':
     print("  __  __               _   ___  ___  ___ ")
@@ -103,6 +105,7 @@ if __name__ == '__main__':
     print("")
     print("Downloader for Moeni.ORG Animes")
     print("Made by. Morgan_KR")
+    print("DATABASE Not Latest!!!")
     db = db_init()
     for ani in db:
         urld(ani)
