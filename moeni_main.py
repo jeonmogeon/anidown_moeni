@@ -35,7 +35,7 @@ def db_init():
             DB[no][1] = aniLink
             DB[no][2].append([vidLink, fileName])
     
-    print("Database returned to ARRAY")
+    print("Database returned to ARRAY\n")
     return(DB)
 
 def urld(ani):
@@ -45,11 +45,15 @@ def urld(ani):
         aniName = ani[0]
         aniLink = ani[1]
         epiList = ani[2]
-        print(f'Download {aniName} : Total {len(epiList)}')
+        print(f'Download {aniName} : Total {len(epiList)}\n')
         for episode in epiList:
             name = episode[0]
             link = episode[1]
-            os.system(f"mkdir {path}/{aniName}")
+            if os.path.exists(f'{path}\{aniName}'):
+                pass
+            else:
+                os.system(f"mkdir {path}\{aniName}")
+
             down(name.replace(' ','_').replace('\\','').replace('/','').replace(':','').replace('*','').replace('?','').replace('"','').replace('<','').replace('>','').replace('|',''), link, aniName)
     
 def down(name, URL, folder):
@@ -62,10 +66,9 @@ def down(name, URL, folder):
     size = int(response.headers['Accept-Ranges'].replace("0-",""))
 
     if(os.path.exists(path+"/"+folder+"/"+name.replace(" ","_")+".mp4")):
-        print("Exists")
+        print(f'Download {folder} : Exists')
         return 0
 
-    print("Download Start")
     download = requests.get("https://s0.momoafile.info/"+uri+".moe", headers=headers)
     f = open(path+"/"+folder+"/"+name.replace(" ","_")+".mp4",'wb')
     f.write(download.content)
@@ -74,23 +77,23 @@ def down(name, URL, folder):
         head = {'Referer':URL.encode('utf-8'), 'Range':'bytes='+str(i*1000000+1) +"-"+ str((i+1)*1000000)}
         f.write(requests.get("https://s0.momoafile.info/"+uri+".moe", headers=head).content)
         lastrange = i + 1
-        sys.stdout.write('\r' + "Downloading " + str(int(i*100/int((size/1000000)))) + "%")
+        sys.stdout.write('\r' + f'Download {folder} : Downloading ' + str(int(i*100/int((size/1000000)))) + "%")
 
     hd = {'Referer':URL.encode('utf-8'), 'Range':'bytes='+str(lastrange*1000000+1) +"-"+ str(size)}
     f.write(requests.get("https://s0.momoafile.info/"+uri+".moe", headers=hd).content)
-    sys.stdout.write('\r' + "Downloading Complete")
+    sys.stdout.write('\r' + f'Download {folder} : Download Complete ')
     f.close()
 
-    print("Subtitle downloading..")
+    print(f'Download {folder} : Subtitle downloading..')
     sb = {'Referer':URL.encode('utf-8')}
     body = requests.get("https://player.moeni.org/sub.php?v="+uri, headers=sb).content
     if len(body)==0: 
-        print("Empty..")
+        print(f'Download {folder} : Subtitle Empty..')
     else: 
         sub = open(path+"/"+folder+"/"+name.replace(" ","_")+".vtt",'wb')
         sub.write(body)
         sub.close()
-        print("Done!")
+        print(f'Download {folder} : Everything Done!')
  
 if __name__ == '__main__':
     print("  __  __               _   ___  ___  ___ ")
