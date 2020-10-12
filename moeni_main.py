@@ -81,14 +81,14 @@ def down(name, URL, folder):
 
     hd = {'Referer':URL.encode('utf-8'), 'Range':'bytes='+str(lastrange*1000000+1) +"-"+ str(size)}
     f.write(requests.get("https://s0.momoafile.info/"+uri+".moe", headers=hd).content)
-    sys.stdout.write('\r' + f'Download {folder} : Download Complete ')
+    sys.stdout.write('\r' + f'Download {folder} : Download Complete\n')
     f.close()
     try:
         sys.stdout.write('\r' + f'Download {folder} : Subtitle downloading..')
         sb = {'Referer':URL.encode('utf-8')}
         body = requests.get("https://player.moeni.org/sub.php?v="+uri, headers=sb).content
         if len(body)==0: 
-            sys.stdout.write('\r' + f'Download {folder} : Subtitle Empty..')
+            sys.stdout.write('\r' + f'Download {folder} : Subtitle Empty..\n')
         else: 
             sub = open(path+"/"+folder+"/"+name.replace(" ","_")+".vtt",'wb')
             sub.write(body)
