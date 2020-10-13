@@ -54,14 +54,14 @@ def urld(ani):
             else:
                 os.system(f"mkdir {path}\{aniName}")
 
-            down(name.replace(' ','_').replace('\\','').replace('/','').replace(':','').replace('*','').replace('?','').replace('"','').replace('<','').replace('>','').replace('|',''), link, aniName)
+            down(name.replace(' ','_').replace('\\','').replace('/','').replace(':','').replace('*','').replace('?','').replace('"','').replace('<','').replace('>','').replace('|',''), link, aniName, aniLink)
     
-def down(name, URL, folder):
+def down(name, URL, folder, anilink):
     print(f'Download {folder} : Starting {name}')
 
     load = 0
     uri = URL.replace("https://s0.momoafile.info/","").replace(".moe","")  
-    headers = {'Referer':URL.encode('utf-8'),'Range':'bytes=0-0'}
+    headers = {'Referer':anilink.encode('utf-8'),'Range':'bytes=0-0'}
     response = requests.get("https://s0.momoafile.info/"+uri+".moe", headers=headers)
     size = int(response.headers['Accept-Ranges'].replace("0-",""))
 
@@ -74,7 +74,7 @@ def down(name, URL, folder):
     f.write(download.content)
 
     for i in range(0, int(size/1000000-1)):
-        head = {'Referer':URL.encode('utf-8'), 'Range':'bytes='+str(i*1000000+1) +"-"+ str((i+1)*1000000)}
+        head = {'Referer':anilink.encode('utf-8'), 'Range':'bytes='+str(i*1000000+1) +"-"+ str((i+1)*1000000)}
         f.write(requests.get("https://s0.momoafile.info/"+uri+".moe", headers=head).content)
         lastrange = i + 1
         sys.stdout.write('\r' + f'Download {folder} : Downloading ' + str(int(i*100/int((size/1000000)))) + "%")
@@ -105,7 +105,7 @@ if __name__ == '__main__':
     print("")
     print("Downloader for Moeni.ORG Animes")
     print("Made by. Morgan_KR")
-    print("DATABASE Not Latest!!!")
+    print("\n Full DOWNLOADER\n")
     db = db_init()
     for ani in db:
         urld(ani)
