@@ -71,7 +71,7 @@ def viddown(name, URL, folder, anilink):
 
     load = 0
     uri = URL.replace("https://s0.momoafile.info/","").replace(".moe","")  
-    headers = {'Referer':URL.encode('utf-8'),'Range':'bytes=0-0'}
+    headers = {'Referer':URL.encode('utf-8'),'Range':'bytes=0-1'}
     response = requests.get("https://s0.momoafile.info/"+uri+".moe", headers=headers)
     size = int(response.headers['Accept-Ranges'].replace("0-",""))
 
