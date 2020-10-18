@@ -61,7 +61,7 @@ def down(name, URL, folder, anilink):
 
     load = 0
     uri = URL.replace("https://s0.momoafile.info/","").replace(".moe","")  
-    headers = {'Referer':anilink.encode('utf-8'),'Range':'bytes=0-0'}
+    headers = {'Referer':anilink.encode('utf-8'),'Range':'bytes=0-1'}
     response = requests.get("https://s0.momoafile.info/"+uri+".moe", headers=headers)
     size = int(response.headers['Accept-Ranges'].replace("0-",""))
 
@@ -74,12 +74,12 @@ def down(name, URL, folder, anilink):
     f.write(download.content)
 
     for i in range(0, int(size/1000000-1)):
-        head = {'Referer':anilink.encode('utf-8'), 'Range':'bytes='+str(i*1000000+1) +"-"+ str((i+1)*1000000)}
+        head = {'Referer':anilink.encode('utf-8'), 'Range':'bytes='+str(i*1000000+2) +"-"+ str((i+1)*1000000+1)}
         f.write(requests.get("https://s0.momoafile.info/"+uri+".moe", headers=head).content)
         lastrange = i + 1
         sys.stdout.write('\r' + f'Download {folder} : Downloading ' + str(int(i*100/int((size/1000000)))) + "%")
 
-    hd = {'Referer':URL.encode('utf-8'), 'Range':'bytes='+str(lastrange*1000000+1) +"-"+ str(size)}
+    hd = {'Referer':URL.encode('utf-8'), 'Range':'bytes='+str(lastrange*1000000+2) +"-"+ str(size)}
     f.write(requests.get("https://s0.momoafile.info/"+uri+".moe", headers=hd).content)
     sys.stdout.write('\r' + f'Download {folder} : Download Complete\n')
     f.close()
