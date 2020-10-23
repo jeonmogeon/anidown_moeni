@@ -5,7 +5,7 @@ import pymysql
 
 path = "downloads"
 
-conn = pymysql.connect(host="ahrjs.live" , user="wjsmorgan", password="Jeonahrjs1015!!", db="ani", charset="utf8")
+conn = pymysql.connect(*)
 curs = conn.cursor()
     
 def db_init():
