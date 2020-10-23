@@ -5,7 +5,7 @@ import pymssql
 
 path = "downloads"
 
-conn = pymssql.connect(host="ahrjs.database.windows.net", user='jeonmogeon', password='Jeonahrjs1015!!', database='ahrjs-db1', charset='utf8')
+conn = pymssql.connect(*)
 curs = conn.cursor()
     
 def db_init():
