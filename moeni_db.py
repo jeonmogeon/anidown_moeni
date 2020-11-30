@@ -29,60 +29,19 @@ def urld(URL, f, n):
     soup = BeautifulSoup(html, 'html.parser')
     opt = soup.find_all("option")
     folder = opt[5].get('sel').replace(" 01화","").replace(" ","_").replace(",","").replace(")","").replace("(","").replace("","")
+    print(URL)
+    print(folder)
     for i in range(5, len(opt)):
         print("Checking " + opt[i].get('sel'))
         down(opt[i].get('sel'),opt[i].get('value'),URL,folder,f,n)
 
-def down(name, uri,URL,folder, f):
-    f.write(n+"@"+folder+"@"+name+"@"+URL+"@"+"https://s0.momoafile.info/"+uri+".moe\n")
-    print(n+"@"+folder+"@"+name+"@"+URL+"@"+"https://s0.momoafile.info/"+uri+".moe")
-    # print("https://s0.momoafile.info/"+uri+".moe")
-    # response = requests.get("https://s0.momoafile.info/"+uri+".moe", headers=headers)
-    # size = int(response.headers['Accept-Ranges'].replace("0-",""))
-
-    # if(os.path.exists(folder+"/"+name.replace(" ","_")+".mp4")):
-    #     # if(os.path.getsize(folder+"/"+name.replace(" ","_")+".mp4")==size+1):
-    #     #     print(os.path.getsize(folder+"/"+name.replace(" ","_")+".mp4")==size+1)
-    #     #     print("File exists")
-    #     #     return "Exists"
-    #     # else:
-    #     #     os.system("del "+folder+"/"+name.replace(" ","_")+".mp4")   
-    #     #     print("File exists but suspended. Re-downloading...")
-    #     print("Exists")
-    #     return 0
-
-    # print("Download Start")
-    # # download = requests.get("https://s0.momoafile.info/"+uri+".moe", headers=headers)
-    # f = open(folder+"/"+name.replace(" ","_")+".mp4",'wb')
-    # f.write(download.content)
-
-    # for i in range(0, int(size/1000000-1)):
-    #     head = {'Referer':URL.encode('utf-8'), 'Range':'bytes='+str(i*1000000+1) +"-"+ str((i+1)*1000000)}
-    #     f.write(requests.get("https://s0.momoafile.info/"+uri+".moe", headers=head).content)
-    #     lastrange = i + 1
-    #     sys.stdout.write('\r' + "Downloading " + str(int(i*100/int((size/1000000)))) + "%")
-
-    # hd = {'Referer':URL.encode('utf-8'), 'Range':'bytes='+str(lastrange*1000000+1) +"-"+ str(size)}
-    # f.write(requests.get("https://s0.momoafile.info/"+uri+".moe", headers=hd).content)
-    # sys.stdout.write('\r' + "Downloading Complete")
-    # f.close()
-    # try:
-    #     print("Subtitle downloading..")
-    #     sb = {'Referer':URL.encode('utf-8')}
-    #     body = requests.get("https://player.moeni.org/sub.php?v="+uri, headers=sb).content
-    #     if len(body)==0: 
-    #         print("Empty..")
-    #     else: 
-    #         sub = open(folder+"/"+name.replace(" ","_")+".vtt",'wb')
-    #         sub.write(body)
-    #         sub.close()
-    #         print("Done!")
-    # except Exception:
-    #     print("ERROR")
-    
+def down(name, uri,URL,folder, f, n):
+    f.write(str(n)+"@"+folder+"@"+name+"@"+URL+"@"+"https://s0.inefile.xyz/"+uri+".moe\n")
+    print(str(n)+"@"+folder+"@"+name+"@"+URL+"@"+"https://s0.inefile.xyz/"+uri+".moe")
+  
 def auto_sitemap():
     f = open("db.lsd", "w")
-    site = open("sitemap.xml", 'r')
+    site = open("sitemap.xml", 'r', -1, 'utf-8')
     print("Sitemap Loaded")
     xml = site.read()
     soup = BeautifulSoup(xml, 'html.parser')
@@ -93,12 +52,18 @@ def auto_sitemap():
     for i in range(0,len(url)-1):
         try:
             urld(url[i],f, i+1)
-        except Exception:
+        except Exception as e:
             f.write("Failed")
-            print("Failed")
+            print(f"Failed\n--> {e}")
     
     f.close   
-        
+def sitemap():
+    sitemap = open('sitemap.xml', 'wb')
+    sitereq = requests.get('https://moeni.org/sitemap.xml')
+    sitemap.write(sitereq.content)
+    sitemap.close()
+    print("Sitemap Downloaded")
+
 if __name__ == '__main__':
     print("  __  __               _   ___  ___  ___ ")
     print(" |  \/  |___  ___ _ _ (_) / _ \| _ \/ __|")
@@ -107,5 +72,5 @@ if __name__ == '__main__':
     print("")
     print("Downloader for Moeni.ORG Animes")
     print("Made by. Morgan_KR")
+    sitemap()
     auto_sitemap()
-    # urld("https://moeni.org/%EC%97%AD%EC%8B%9C-%EB%82%B4-%EC%B2%AD%EC%B6%98-%EB%9F%AC%EB%B8%8C%EC%BD%94%EB%AF%B8%EB%94%94%EB%8A%94-%EC%9E%98%EB%AA%BB%EB%90%90%EB%8B%A4/")

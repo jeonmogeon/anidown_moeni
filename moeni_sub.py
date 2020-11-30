@@ -60,7 +60,7 @@ def down(name, URL, folder):
     print(f'Download {folder} : Starting {name}')
 
     load = 0
-    uri = URL.replace("https://s0.momoafile.info/","").replace(".moe","")  
+    uri = URL.replace("https://s0.inefile.xyz/","").replace(".moe","")  
     
     sys.stdout.write('\r' + f'Download {folder} : Subtitle downloading..')
     sb = {'Referer':URL.encode('utf-8')}

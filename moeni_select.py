@@ -70,48 +70,49 @@ def viddown(name, URL, folder, anilink):
     print(f'Download {folder} : Starting {name}')
 
     load = 0
-    uri = URL.replace("https://s0.momoafile.info/","").replace(".moe","")  
+    uri = URL.replace("https://s0.inefile.xyz/","").replace(".moe","")  
     headers = {'Referer':URL.encode('utf-8'),'Range':'bytes=0-1'}
-    response = requests.get("https://s0.momoafile.info/"+uri+".moe", headers=headers)
+    response = requests.get("https://s0.inefile.xyz/"+uri+".moe", headers=headers)
+    print(str(list(response.headers.keys())) + " : " + str(response.status_code))
     size = int(response.headers['Accept-Ranges'].replace("0-",""))
 
     if(os.path.exists(path+"/"+folder+"/"+name.replace(" ","_")+".mp4")):
         print(f'Download {folder} : Exists')
         return 0
 
-    download = requests.get("https://s0.momoafile.info/"+uri+".moe", headers=headers)
+    download = requests.get("https://s0.inefile.xyz/"+uri+".moe", headers=headers)
     f = open(path+"/"+folder+"/"+name.replace(" ","_")+".mp4",'wb')
     f.write(download.content)
 
     for i in range(0, int(size/1000000-1)):
         head = {'Referer':URL.encode('utf-8'), 'Range':'bytes='+str(i*1000000+2) +"-"+ str((i+1)*1000000+1)}
-        f.write(requests.get("https://s0.momoafile.info/"+uri+".moe", headers=head).content)
+        f.write(requests.get("https://s0.inefile.xyz/"+uri+".moe", headers=head).content)
         lastrange = i + 1
-        sys.stdout.write('\r' + f'Download {folder} : Downloading ' + str(int(i*100/int((size/1000000)))) + "%")
+        sys.stdout.write('\r' + f'Download {folder} : Downloading ' + str(int(i*100/int((size/1000000)))) + "%                ")
 
     hd = {'Referer':URL.encode('utf-8'), 'Range':'bytes='+str(lastrange*1000000+2) +"-"+ str(size)}
-    f.write(requests.get("https://s0.momoafile.info/"+uri+".moe", headers=hd).content)
-    sys.stdout.write('\r' + f'Download {folder} : Download Complete\n')
+    f.write(requests.get("https://s0.inefile.xyz/"+uri+".moe", headers=hd).content)
+    sys.stdout.write('\r' + f'Download {folder} : Download Complete                     \n')
     f.close()
 
 def subdown(name, URL, folder, anilink):
     print(f'Download {folder} : Starting {name}')
 
     load = 0
-    uri = URL.replace("https://s0.momoafile.info/","").replace(".moe","")  
+    uri = URL.replace("https://s0.inefile.xyz/","").replace(".moe","")  
     
-    sys.stdout.write('\r' + f'Download {folder} : Subtitle downloading..')
+    sys.stdout.write('\r' + f'Download {folder} : Subtitle downloading..                 ')
     sb = {'Referer':anilink.encode('utf-8')}
     body = requests.get("https://player.moeni.org/sub.php?v="+uri, headers=sb).content
     if len(body)==0: 
         print()
-        sys.stdout.write('\r' + f'Download {folder} : Subtitle Empty..\n')
+        sys.stdout.write('\r' + f'Download {folder} : Subtitle Empty..                                    \n')
     else: 
         sub = open(path+"/"+folder+"/"+name.replace(" ","_")+".vtt",'wb')
         sub.write(body)
         sub.close()
         print()
-        sys.stdout.write('\r' + f'Download {folder} : Everything Done!\n')
+        sys.stdout.write('\r' + f'Download {folder} : Everything Done!                                           \n')
 
 if __name__ == '__main__':
     print("  __  __               _   ___  ___  ___ ")
@@ -140,3 +141,15 @@ if __name__ == '__main__':
         m = 2
     
     seld(db[num], m)
+
+# GET /MqVnQvrh2Itb0/p0p1W1cJmEhOubz6S/AwlEqHmPr2lqDBfKBk0F/p0p1zhNVXzXd4puKJL1rsqQ8aKzYagHK4IrWxxLkfoCQEUpfrYrf2BOyjg8wzn2bLqt/C6p/QZYRXrd/p0p1dSQ.moe HTTP/1.1
+# Host: s0.inefile.xyz
+# User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0
+# Accept: */*
+# Accept-Language: en-US,en;q=0.5
+# Accept-Encoding: gzip, deflate, br
+# Referer: https://moeni.org/%ec%a3%bc%ec%88%a0%ed%9a%8c%ec%a0%84/
+# range: bytes=146800640-147188276
+# Origin: https://moeni.org
+# DNT: 1
+# Connection: keep-alive

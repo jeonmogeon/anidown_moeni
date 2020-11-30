@@ -60,42 +60,42 @@ def down(name, URL, folder, anilink):
     print(f'Download {folder} : Starting {name}')
 
     load = 0
-    uri = URL.replace("https://s0.momoafile.info/","").replace(".moe","")  
+    uri = URL.replace("https://s0.inefile.xyz/","").replace(".moe","")  
     headers = {'Referer':anilink.encode('utf-8'),'Range':'bytes=0-1'}
-    response = requests.get("https://s0.momoafile.info/"+uri+".moe", headers=headers)
+    response = requests.get("https://s0.inefile.xyz/"+uri+".moe", headers=headers)
     size = int(response.headers['Accept-Ranges'].replace("0-",""))
 
     if(os.path.exists(path+"/"+folder+"/"+name.replace(" ","_")+".mp4")):
         print(f'Download {folder} : Exists')
         return 0
 
-    download = requests.get("https://s0.momoafile.info/"+uri+".moe", headers=headers)
+    download = requests.get("https://s0.inefile.xyz/"+uri+".moe", headers=headers)
     f = open(path+"/"+folder+"/"+name.replace(" ","_")+".mp4",'wb')
     f.write(download.content)
 
     for i in range(0, int(size/1000000-1)):
         head = {'Referer':anilink.encode('utf-8'), 'Range':'bytes='+str(i*1000000+2) +"-"+ str((i+1)*1000000+1)}
-        f.write(requests.get("https://s0.momoafile.info/"+uri+".moe", headers=head).content)
+        f.write(requests.get("https://s0.inefile.xyz/"+uri+".moe", headers=head).content)
         lastrange = i + 1
-        sys.stdout.write('\r' + f'Download {folder} : Downloading ' + str(int(i*100/int((size/1000000)))) + "%")
+        sys.stdout.write('\r' + f'Download {folder} : Downloading ' + str(int(i*100/int((size/1000000)))) + "%                 ")
 
     hd = {'Referer':URL.encode('utf-8'), 'Range':'bytes='+str(lastrange*1000000+2) +"-"+ str(size)}
-    f.write(requests.get("https://s0.momoafile.info/"+uri+".moe", headers=hd).content)
-    sys.stdout.write('\r' + f'Download {folder} : Download Complete\n')
+    f.write(requests.get("https://s0.inefile.xyz/"+uri+".moe", headers=hd).content)
+    sys.stdout.write('\r' + f'Download {folder} : Download Complete                     \n')
     f.close()
     try:
-        sys.stdout.write('\r' + f'Download {folder} : Subtitle downloading..')
+        sys.stdout.write('\r' + f'Download {folder} : Subtitle downloading..                    ')
         sb = {'Referer':URL.encode('utf-8')}
         body = requests.get("https://player.moeni.org/sub.php?v="+uri, headers=sb).content
         if len(body)==0: 
-            sys.stdout.write('\r' + f'Download {folder} : Subtitle Empty..\n')
+            sys.stdout.write('\r' + f'Download {folder} : Subtitle Empty..                 \n')
         else: 
             sub = open(path+"/"+folder+"/"+name.replace(" ","_")+".vtt",'wb')
             sub.write(body)
             sub.close()
-            sys.stdout.write('\r' + f'Download {folder} : Everything Done!\n')
+            sys.stdout.write('\r' + f'Download {folder} : Everything Done!                 \n')
     except Exception:
-            sys.stdout.write('\r' + f'Download {folder} : Downloaded without subtitle!\n')
+            sys.stdout.write('\r' + f'Download {folder} : Downloaded without subtitle!                \n')
  
 if __name__ == '__main__':
     print("  __  __               _   ___  ___  ___ ")
