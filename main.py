@@ -74,7 +74,7 @@ def getMagnet(dict,referer):
 
 conn = sqlite3.connect("db/magnet.db", isolation_level=None)
 c = conn.cursor()
-c.execute("CREATE TABLE IF NOT EXISTS anime (id integer PRIMARY KEY, name text, url text)")
+c.execute("CREATE TABLE IF NOT EXISTS anime (id integer, name text, url text)")
 c.execute("CREATE TABLE IF NOT EXISTS magnet (id integer , episode text,magnet text,webSeed text,subUrl text,referer text)")
 
 stmap = []
@@ -108,11 +108,11 @@ for i in range(start,len(stmap)-1):
 		for eplist in url_list[0]:
 			ml = getMagnet(eplist,referer)
 			magnet = ml[0]
-			result.append({'episode':eplist['episode'],'manget':magnet,'webSeed':ml[2],'sub':ml[1],'referer':referer})
+			result.append({'episode':eplist['episode'],'magnet':magnet,'webSeed':ml[2],'sub':ml[1],'referer':referer})
 		#print(result)
 		c.execute(f"INSERT INTO anime VALUES({i}, '{title}','{url}')")
 		for res in result:
 			c.execute(f"INSERT INTO magnet VALUES({i}, '{res['episode']}','{res['magnet']}','{res['webSeed']}','{res['sub']}','{referer}')")
-			print('DBIN')
+
 	except Exception as e:
 		print(e)
