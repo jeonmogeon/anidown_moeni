@@ -3,6 +3,7 @@
 from bs4 import BeautifulSoup
 import requests
 from selenium import webdriver
+import chromedriver_autoinstaller
 import time
 import sys
 import os
