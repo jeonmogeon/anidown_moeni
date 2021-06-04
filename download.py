@@ -129,5 +129,15 @@ db_call()
 
 for id in anime:
     name = anime[id]
+    f = open('loag.ee','r')
+    buf = f.read()
+    f.close()
+
+    if str(id) in buf:
+        print(f"{id} Already Done")
+        continue
+        
     for info in epist[id]:
         epi(name, id, info)
+    with open('loag.ee','a') as f:
+        f.write(f'{id}\n')
